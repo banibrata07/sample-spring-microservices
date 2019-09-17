@@ -1,4 +1,4 @@
-FROM openjdk
+FROM openjdk:8
 WORKDIR /
 MAINTAINER banibrataaws@gmail.com
 ADD discovery-service.jar discovery-service.jar
