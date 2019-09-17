@@ -1,5 +1,6 @@
 FROM openjdk:8
-MAINTAINER Piotr Minkowski <piotr.minkowski@gmail.com>
-ADD target/customer-service.jar customer-service.jar
+WORKDIR /
+MAINTAINER banibrataaws@gmail.com
+ADD customer-service.jar customer-service.jar
 ENTRYPOINT ["java", "-jar", "/customer-service.jar"]
 EXPOSE 3333
