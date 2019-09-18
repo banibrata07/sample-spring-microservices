@@ -13,7 +13,7 @@ zuul:
   prefix: /api
   routes:
     account: 
-      path: /account/**
+      path: /accounts/**
       serviceId: account-service
     customer: 
       path: /customer/**
@@ -25,7 +25,6 @@ ribbon:
 
 eureka:
   client:
-    register-with-eureka: false
     fetch-registry: false
     serviceUrl:
       defaultZone:http://172.31.87.243:8761/eureka/
