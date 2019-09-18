@@ -30,7 +30,7 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone:http://172.31.87.243:8761/eureka/
-    registerWithEureka: false
+    registerWithEureka: true
   instance:
     prefer-ip-address: true
       
