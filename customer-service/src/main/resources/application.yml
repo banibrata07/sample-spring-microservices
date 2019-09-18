@@ -4,7 +4,7 @@ server:
 eureka:  
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://ec2-3-83-55-222.compute-1.amazonaws.com:8761}/eureka/
+      defaultZone: ${DISCOVERY_URL:http://ec2-52-71-106-186.compute-1.amazonaws.com:8761}/eureka/
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
