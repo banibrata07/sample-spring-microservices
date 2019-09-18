@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableZuulProxy
 @RestController
+@EnableDiscoveryClient
 public class Application {
 
 	public static void main(String[] args) {
