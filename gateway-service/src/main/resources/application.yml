@@ -13,7 +13,7 @@ zuul:
   prefix: /api
   routes:
     account: 
-      path: /accounts/**
+      path: /account/**
       serviceId: account-service
     customer: 
       path: /customer/**
