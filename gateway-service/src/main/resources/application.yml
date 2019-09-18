@@ -27,7 +27,7 @@ ribbon:
 
 eureka:
   client:
-    fetch-registry: false
+    fetch-registry: true
     serviceUrl:
       defaultZone:http://172.31.87.243:8761/eureka/
     registerWithEureka: false
