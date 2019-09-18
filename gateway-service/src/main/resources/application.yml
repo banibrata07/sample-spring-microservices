@@ -29,6 +29,8 @@ eureka:
     serviceUrl:
       defaultZone:http://172.31.87.243:8761/eureka/
     registerWithEureka: false
+  instance:
+    prefer-ip-address: true
       
 server:
   port: 8765
