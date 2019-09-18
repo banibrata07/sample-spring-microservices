@@ -22,17 +22,12 @@ zuul:
 ribbon:
   eureka:
     enabled: true
-  restclient:
-    enabled: true  
 
 eureka:
   client:
-    fetch-registry: true
     serviceUrl:
       defaultZone:http://172.31.87.243:8761/eureka/
-    registerWithEureka: true
-  instance:
-    prefer-ip-address: true
+    registerWithEureka: false
       
 server:
   port: 8765
