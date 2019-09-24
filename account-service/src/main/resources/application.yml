@@ -18,9 +18,7 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 1
     leaseExpirationDurationInSeconds: 2
-    prefer-ip-address: false
-    hostname: ${env.app.hostname}
-    nonSecurePort: ${env.app.port}
+    prefer-ip-address: true
     
 ribbon:
   eureka:

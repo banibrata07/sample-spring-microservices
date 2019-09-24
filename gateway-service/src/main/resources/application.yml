@@ -30,9 +30,8 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
   instance:
-    prefer-ip-address: false
-    hostname: ${env.app.hostname}
-    nonSecurePort: ${env.app.port}
+      instance:
+    prefer-ip-address: true
     
 server:
   port: 8765
