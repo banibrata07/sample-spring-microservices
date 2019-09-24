@@ -30,7 +30,6 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
   instance:
-      instance:
     prefer-ip-address: true
     
 server:
