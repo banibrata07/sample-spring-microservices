@@ -1,6 +1,6 @@
 node {
 
-    withMaven(maven:'maven') {
+    withMaven(maven:'maven-3.6.2') {
 
         stage('Checkout') {
             git url: 'https://github.com/banibrata07/sample-spring-microservices.git', credentialsId: 'github-banibrataaws', branch: 'master'
