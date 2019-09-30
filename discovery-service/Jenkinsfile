@@ -27,7 +27,7 @@ node {
                removePrefix: "discovery-service",
                remoteDirectory: "//usr//discovery",
                execCommand: "docker ps -a"
-              )
+              ),
               sshTransfer(
                sourceFiles: "discovery-service/target/discovery-service.jar",
                removePrefix: "discovery-service/target/",
