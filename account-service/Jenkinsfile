@@ -46,7 +46,7 @@ node {
              verbose: true,
              transfers: [
               sshTransfer(
-               execCommand: "docker stop accont;docker rm -f accont;docker image rm -f account;"
+               execCommand: "docker stop account;docker rm -f account;docker image rm -f account;"
               )
              ])
            ])
