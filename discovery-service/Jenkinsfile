@@ -28,6 +28,12 @@ node {
                remoteDirectory: "//usr//discovery",
                execCommand: "docker ps -a"
               )
+               sshTransfer(
+               sourceFiles: "discovery-service/target/discovery-service.jar",
+               removePrefix: "discovery-service/target/",
+               remoteDirectory: "//usr//discovery",
+               execCommand: "docker stop discovery;docker rm -f discovery;docker image rm -f discovery;cd /usr/discovery;docker build -t discovery ."
+              )
              ])
            ])
          }
