@@ -1,34 +1,92 @@
 node {
 
-    withMaven(maven:'maven') {
+    withMaven(maven:'maven-3.6.2') {
 
         stage('Checkout') {
-            git url: 'https://github.com/piomin/sample-spring-microservices.git', credentialsId: 'github-piomin', branch: 'master'
+            git url: 'https://github.com/banibrata07/sample-spring-microservices.git', credentialsId: 'github-banibrataaws', branch: 'master'
         }
 
         stage('Build') {
             sh 'mvn clean install'
-
             def pom = readMavenPom file:'pom.xml'
             print pom.version
             env.version = pom.version
         }
-
-        stage('Image') {
-            dir ('customer-service') {
-                def app = docker.build "localhost:5000/customer-service:${env.version}"
-                app.push()
-            }
+        
+         stage('SSH transfer') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_app",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               sourceFiles: "customer-service/Dockerfile",
+               removePrefix: "customer-service",
+               remoteDirectory: "//usr//customer",
+              ),
+              sshTransfer(
+               sourceFiles: "customer-service/target/customer-service.jar",
+               removePrefix: "customer-service/target/",
+               remoteDirectory: "//usr//customer",
+              )
+             ])
+           ])
+         }
         }
-
-        stage ('Run') {
-            docker.image("localhost:5000/customer-service:${env.version}").run('-p 3333:3333 -h customer --name customer --link discovery --link account')
+        stage('SSH remove Previous image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_app",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker stop customer;docker rm -f customer;docker image rm -f customer;"
+              )
+             ])
+           ])
+         }
         }
-
+        stage('build image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_app",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "cd /usr/customer;docker build -t customer ."
+              )
+             ])
+           ])
+         }
+        }
+        stage('Run image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_app",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker run -d --network=host --name customer -p 3333:3333 customer;"
+              )
+             ])
+           ])
+         }
+        }
         stage ('Final') {
             build job: 'gateway-service-pipeline', wait: false
-        }      
-
+        }  
     }
 
 }

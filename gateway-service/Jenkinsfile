@@ -1,31 +1,90 @@
 node {
 
-    withMaven(maven:'maven') {
+    withMaven(maven:'maven-3.6.2') {
 
         stage('Checkout') {
-            git url: 'https://github.com/piomin/sample-spring-microservices.git', credentialsId: 'github-piomin', branch: 'master'
+            git url: 'https://github.com/banibrata07/sample-spring-microservices.git', credentialsId: 'github-banibrataaws', branch: 'master'
         }
 
         stage('Build') {
             sh 'mvn clean install'
-
             def pom = readMavenPom file:'pom.xml'
             print pom.version
             env.version = pom.version
         }
-
-        stage('Image') {
-            dir ('gateway-service') {
-                def app = docker.build "localhost:5000/gateway-service:${env.version}"
-                app.push()
-            }
+        
+         stage('SSH transfer') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_gateway",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               sourceFiles: "gateway-service/Dockerfile",
+               removePrefix: "gateway-service",
+               remoteDirectory: "//usr//gateway",
+              ),
+              sshTransfer(
+               sourceFiles: "gateway-service/target/gateway-service.jar",
+               removePrefix: "gateway-service/target/",
+               remoteDirectory: "//usr//gateway",
+              )
+             ])
+           ])
+         }
         }
-
-        stage ('Run') {
-            docker.image("localhost:5000/gateway-service:${env.version}").run('-p 3333:3333 -h gateway --name gateway --link discovery --link account --link customer')
+        stage('SSH remove Previous image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_gateway",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker stop gateway;docker rm -f gateway;docker image rm -f gateway;"
+              )
+             ])
+           ])
+         }
         }
-     
-
+        stage('build image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_gateway",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "cd /usr/gateway;docker build -t gateway ."
+              )
+             ])
+           ])
+         }
+        }
+        stage('Run image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_gateway",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker run -d --network=host --name gateway -p 8765:8765 gateway;"
+              )
+             ])
+           ])
+         }
+        }
+        
     }
 
 }
