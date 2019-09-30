@@ -12,6 +12,27 @@ node {
             print pom.version
             env.version = pom.version
         }
+        
+         stage('SSH transfer') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "${env.docker_host_discovery}",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               sourceFiles: "discovery-service/Dockerfile",
+               removePrefix: "discovery-service",
+               remoteDirectory: "//usr//discovery",
+               execCommand: "docker ps -a"
+              )
+             ])
+           ])
+         }
+        }
+
 
     }
 
