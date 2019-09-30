@@ -26,20 +26,64 @@ node {
                sourceFiles: "discovery-service/Dockerfile",
                removePrefix: "discovery-service",
                remoteDirectory: "//usr//discovery",
-               execCommand: "docker ps -a"
               ),
               sshTransfer(
                sourceFiles: "discovery-service/target/discovery-service.jar",
                removePrefix: "discovery-service/target/",
                remoteDirectory: "//usr//discovery",
-               execCommand: "docker stop discovery;docker rm -f discovery;docker image rm -f discovery;cd /usr/discovery;docker build -t discovery ."
               )
              ])
            ])
          }
         }
-
-
+        stage('SSH remove Previous image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_discovery",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker stop discovery;docker rm -f discovery;docker image rm -f discovery;"
+              )
+             ])
+           ])
+         }
+        }
+        stage('build image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_discovery",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "cd /usr/discovery;docker build -t discovery ."
+              )
+             ])
+           ])
+         }
+        }
+        stage('Run image') {
+         script {
+          sshPublisher(
+           continueOnError: false, failOnError: true,
+           publishers: [
+            sshPublisherDesc(
+             configName: "docker_host_discovery",
+             verbose: true,
+             transfers: [
+              sshTransfer(
+               execCommand: "docker run -d --network=host --name discovery -p 8761:8761 discovery;"
+              )
+             ])
+           ])
+         }
+        }
     }
 
 }
