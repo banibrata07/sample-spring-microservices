@@ -19,7 +19,7 @@ node {
            continueOnError: false, failOnError: true,
            publishers: [
             sshPublisherDesc(
-             configName: "${env.docker_host_discovery}",
+             configName: "docker_host_discovery",
              verbose: true,
              transfers: [
               sshTransfer(
