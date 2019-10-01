@@ -13,6 +13,12 @@ node {
             env.version = pom.version
         }
         
+        stage('S3 transfer') {
+            script {
+             s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'aws-s3artifact-bani/account', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/account-service/target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'aws-s3artifact-bani/account', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/account-service/Dockerfile', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'aws-s3artifact-bani', userMetadata: []
+            }
+        }
+        
          stage('SSH transfer') {
          script {
           sshPublisher(
