@@ -21,8 +21,10 @@ node {
             }
         }
          stage('restart Server') {
-            def list = new JsonSlurper().parseText( sh aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query 'AutoScalingGroups[?InstanceId==null].Instances[].InstanceId' )
-            print list
+            def restResponse = sh 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query 'AutoScalingGroups[?InstanceId==null].Instances[].InstanceId''
+            def list = new JsonSlurper().parseText( restResponse )
+            list.each { println it }
+            
         }
         /*
          stage('SSH transfer') {
