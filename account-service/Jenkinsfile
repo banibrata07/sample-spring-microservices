@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 node {
 
     withMaven(maven:'maven-3.6.2') {
@@ -17,6 +19,10 @@ node {
             script {
              s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'aws-s3artifact-bani/account', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/account-service/target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'aws-s3artifact-bani/account', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/account-service/Dockerfile', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'aws-s3artifact-bani', userMetadata: []
             }
+        }
+         stage('restart Server') {
+            def list = new JsonSlurper().parseText( sh 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query 'AutoScalingGroups[?InstanceId==null].Instances[].InstanceId'' )
+            print list
         }
         /*
          stage('SSH transfer') {
