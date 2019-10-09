@@ -34,7 +34,7 @@ node {
                return exitcode
            }
            def list = new JsonSlurper().parseText(output)
-           list.each { println it }
+           list.each { aws ec2 stop-instances --instance-ids it --region us-east-1 }
             
         }
         /*
