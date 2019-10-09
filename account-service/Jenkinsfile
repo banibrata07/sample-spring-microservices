@@ -21,8 +21,7 @@ node {
             }
         }
          stage('restart Server') {
-            def restResponse = 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output json'
-           
+           def restResponse = 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output json'
            def proc = restResponse.execute()
            proc.waitFor()              
            def output = proc.in.text
@@ -34,8 +33,8 @@ node {
                println "Process exit code: ${exitcode}"
                return exitcode
            }
-           
-           println output.split()
+           def list = new JsonSlurper().parseText(output)
+           list.each { println it }
             
         }
         /*
