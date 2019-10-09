@@ -34,7 +34,21 @@ node {
                return exitcode
            }
            def list = new JsonSlurper().parseText(output)
-           list.each { aws ec2 stop-instances --instance-ids it --region us-east-1 }
+           list.each { 
+           def instance = it
+           def command =  'aws ec2 stop-instances --instance-ids $instance --region us-east-1'
+           def proc = command.execute()
+           proc.waitFor()              
+           def output = proc.in.text
+           def exitcode= proc.exitValue()
+           def error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+           }
             
         }
         /*
