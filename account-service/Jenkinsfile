@@ -37,7 +37,7 @@ node {
            list.each { 
            def instance = it
            def command =  'aws ec2 stop-instances --instance-ids replace --region us-east-1'
-           command.replaceAll('replace',instance)
+           command = command.replaceAll('replace',instance)
            proc = command.execute()
            proc.waitFor()              
            output = proc.in.text
