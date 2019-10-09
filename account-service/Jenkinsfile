@@ -21,8 +21,8 @@ node {
             }
         }
          stage('restart Server') {
-            def restResponse = sh 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId'
-            println restResponse
+            def restResponse = sh 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output text'
+            def instances=(${restResponse//'\n'/ })
             def list = new JsonSlurper().parseText(restResponse)
             list.each { println it }
             
