@@ -35,11 +35,12 @@ node {
                println "Process exit code: ${exitcode}"
                return exitcode
            }
+           echo 'success from Autoscaling Scale Out Instance Deployment'
         }
         
         stage('Sleeping'){
-        sleep 120
-        
+         sleep 120
+         echo 'waiting 120 sec'
         }
 
         
@@ -57,6 +58,7 @@ node {
                println "Process exit code: ${exitcode}"
                return exitcode
            }
+            echo 'success from Autoscaling Scale In Instance Deployment'
         }
        
         
