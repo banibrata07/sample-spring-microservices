@@ -48,12 +48,19 @@ public class Api {
 	@RequestMapping("/customers/{id}")
 	public Customer findById(@PathVariable("id") Integer id) {
 		logger.info(String.format("Customer.findById(%s)", id));
+		InetAddress localhost = null;
 		Customer customer = customers.stream().filter(it -> it.getId().intValue()==id.intValue()).findFirst().get();
 		List<Account> accounts =  accountClient.getAccounts(id);
 		customer.setAccounts(accounts);
-		InetAddress localhost = InetAddress.getLocalHost(); 
-        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
-		customer.setCustomerIPAddress((localhost.getHostAddress()).trim());
+		try
+        {
+			InetAddress localhost = InetAddress.getLocalHost(); 
+	        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
+			customer.setCustomerIPAddress((localhost.getHostAddress()).trim());
+        }
+        catch(java.net.UnknownHostException e){
+        	 System.out.println(e);
+        }
 		return customer;
 	}
 	

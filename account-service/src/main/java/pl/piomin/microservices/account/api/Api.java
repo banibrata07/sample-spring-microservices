@@ -35,10 +35,18 @@ public class Api {
 	@RequestMapping("/accounts/{number}")
 	public Account findByNumber(@PathVariable("number") String number) {
 		logger.info(String.format("Account.findByNumber(%s)", number));
+		InetAddress localhost = null;
 		Account accountDtls =  accounts.stream().filter(it -> it.getNumber().equals(number)).findFirst().get();
-		InetAddress localhost = InetAddress.getLocalHost(); 
-        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
-		accountDtls.setAccountIPAddress((localhost.getHostAddress()).trim());
+		try
+        {
+			localhost = InetAddress.getLocalHost(); 
+	        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
+	        accountDtls.setAccountIPAddress((localhost.getHostAddress()).trim());
+        }
+        catch(java.net.UnknownHostException e){
+        	 System.out.println(e);
+        }
+		
 		return accountDtls;
 	}
 	
