@@ -54,7 +54,7 @@ public class Api {
 		customer.setAccounts(accounts);
 		try
         {
-			InetAddress localhost = InetAddress.getLocalHost(); 
+			localhost = InetAddress.getLocalHost(); 
 	        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
 			customer.setCustomerIPAddress((localhost.getHostAddress()).trim());
         }
