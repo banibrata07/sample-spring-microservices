@@ -37,7 +37,7 @@ node {
            sleep(300)
         }
         stage('Sleep') {
-           sleep(time:300,unit:"SECONDS")
+           sleep 30
         }
        
          stage('Autoscaling Scale In Instance Deployment') {
