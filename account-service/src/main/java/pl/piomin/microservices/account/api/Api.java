@@ -37,9 +37,8 @@ public class Api {
 		logger.info(String.format("Account.findByNumber(%s)", number));
 		Account accountDtls =  accounts.stream().filter(it -> it.getNumber().equals(number)).findFirst().get();
 		InetAddress localhost = InetAddress.getLocalHost(); 
-        System.out.println("System IP Address : " + 
-                      (localhost.getHostAddress()).trim()); 
-		accountDtls.setAccountIPAddress(localhost.getHostAddress()).trim());
+        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
+		accountDtls.setAccountIPAddress((localhost.getHostAddress()).trim());
 		return accountDtls;
 	}
 	
