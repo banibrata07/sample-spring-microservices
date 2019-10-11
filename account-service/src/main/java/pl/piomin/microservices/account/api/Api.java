@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.net.InetAddress;
 
 import pl.piomin.microservices.account.model.Account;
 
@@ -34,7 +35,12 @@ public class Api {
 	@RequestMapping("/accounts/{number}")
 	public Account findByNumber(@PathVariable("number") String number) {
 		logger.info(String.format("Account.findByNumber(%s)", number));
-		return accounts.stream().filter(it -> it.getNumber().equals(number)).findFirst().get();
+		Account accountDtls =  accounts.stream().filter(it -> it.getNumber().equals(number)).findFirst().get();
+		InetAddress localhost = InetAddress.getLocalHost(); 
+        System.out.println("System IP Address : " + 
+                      (localhost.getHostAddress()).trim()); 
+		accountDtls.setAccountIPAddress(localhost.getHostAddress()).trim());
+		return accountDtls;
 	}
 	
 	

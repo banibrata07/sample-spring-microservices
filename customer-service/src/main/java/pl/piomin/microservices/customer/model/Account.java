@@ -4,6 +4,7 @@ public class Account {
 
 	private Integer id;
 	private String number;
+	private String accountIPAddress;
 
 	public Account() {
 		
@@ -29,6 +30,14 @@ public class Account {
 
 	public void setNumber(String number) {
 		this.number = number;
+	}
+	
+	public String getAccountIPAddress() {
+		return accountIPAddress;
+	}
+
+	public void setAccountIPAddress(String accountIPAddress) {
+		this.accountIPAddress = accountIPAddress;
 	}
 
 }

@@ -13,6 +13,7 @@ import pl.piomin.microservices.customer.intercomm.AccountClient;
 import pl.piomin.microservices.customer.model.Account;
 import pl.piomin.microservices.customer.model.Customer;
 import pl.piomin.microservices.customer.model.CustomerType;
+import java.net.InetAddress;
 
 @RestController
 public class Api {
@@ -50,6 +51,10 @@ public class Api {
 		Customer customer = customers.stream().filter(it -> it.getId().intValue()==id.intValue()).findFirst().get();
 		List<Account> accounts =  accountClient.getAccounts(id);
 		customer.setAccounts(accounts);
+		InetAddress localhost = InetAddress.getLocalHost(); 
+        System.out.println("System IP Address : " + 
+                      (localhost.getHostAddress()).trim()); 
+		customer.setCustomerIPAddress((localhost.getHostAddress()).trim());
 		return customer;
 	}
 	
