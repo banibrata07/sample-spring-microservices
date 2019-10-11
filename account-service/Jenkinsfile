@@ -61,6 +61,10 @@ node {
             echo 'success from Autoscaling Scale In Instance Deployment'
         }
        
+        stage('Wait Time Server restart'){
+         sleep 120
+         echo 'waiting 120 sec'
+        }
         
         /* stage('restart Server') {
            def restResponse = 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output json'
