@@ -33,7 +33,7 @@ node {
                println "Process exit code: ${exitcode}"
                return exitcode
            }
-           //sleep(time:300,unit:"SECONDS")
+           sleep(time:300,unit:"SECONDS")
         }
        
          stage('Autoscaling Scale In Instance Deployment') {
