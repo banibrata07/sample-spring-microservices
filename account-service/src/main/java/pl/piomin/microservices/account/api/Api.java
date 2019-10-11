@@ -54,7 +54,20 @@ public class Api {
 	@RequestMapping("/accounts/customer/{customer}")
 	public List<Account> findByCustomer(@PathVariable("customer") Integer customerId) {
 		logger.info(String.format("Account.findByCustomer(%s)", customerId));
-		return accounts.stream().filter(it -> it.getCustomerId().intValue()==customerId.intValue()).collect(Collectors.toList());
+		InetAddress localhost = null;
+		List<Account> accountList = accounts.stream().filter(it -> it.getCustomerId().intValue()==customerId.intValue()).collect(Collectors.toList());
+		try
+        {
+			localhost = InetAddress.getLocalHost(); 
+	        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
+	        for(Account account: accountList){
+	        	account.setAccountIPAddress((localhost.getHostAddress()).trim());
+	        }
+        }
+        catch(java.net.UnknownHostException e){
+        	 System.out.println(e);
+        }
+        return accountList;
 	}
 	
 	@RequestMapping("/accounts")
