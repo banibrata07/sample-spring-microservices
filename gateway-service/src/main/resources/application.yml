@@ -31,6 +31,8 @@ eureka:
     fetchRegistry: true
   instance:
     prefer-ip-address: true
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
     
 server:
   port: 8765
