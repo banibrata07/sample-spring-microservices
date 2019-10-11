@@ -9,7 +9,7 @@ public class Customer {
 	private String name;
 	private CustomerType type;
 	private List<Account> accounts;
-	private string customerIPAddress;
+	private String customerIPAddress;
 
 	public Customer() {
 		
