@@ -33,9 +33,9 @@ node {
                println "Process exit code: ${exitcode}"
                return exitcode
            }
-           sleep(time:300,unit:"SECONDS")
+           //sleep(time:300,unit:"SECONDS")
         }
-        
+       /* 
          stage('Autoscaling Scale In Instance Deployment') {
            def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name appServerASG --min-size 2 --max-size 4 --desired-capacity 2  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
            def proc = restResponse.execute()
@@ -50,7 +50,7 @@ node {
                return exitcode
            }
            sleep(time:300,unit:"SECONDS")
-        }
+        }*/
             
         
         /* stage('restart Server') {
