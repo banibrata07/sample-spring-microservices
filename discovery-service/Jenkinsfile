@@ -89,7 +89,9 @@ node {
            ])
          }
         }*/
-        
+         stage ('Final') {
+            build job: 'discovery-pipeline', wait: false
+        } 
     }
 
 }
