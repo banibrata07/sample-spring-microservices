@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://172.31.92.175:8761/eureka
+      defaultZone: ${DISCOVERY_URL:http://172.31.92.175:8761}/eureka
     registerWithEureka: false
     fetchRegistry: false
   server:
@@ -29,7 +29,7 @@ eureka:
     prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://172.31.21.134:8761/eureka
+      defaultZone: ${DISCOVERY_URL:http://172.31.21.134:8761}/eureka
     registerWithEureka: false
     fetchRegistry: false
   server:
