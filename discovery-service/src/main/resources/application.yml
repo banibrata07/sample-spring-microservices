@@ -11,10 +11,10 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${DISCOVERY_URL:http://172.31.92.175:8761}/eureka
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
   server:
-    enableSelfPreservation: false  
+    enableSelfPreservation: true  
     
 --- 
 spring:
@@ -30,7 +30,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${DISCOVERY_URL:http://172.31.21.134:8761}/eureka
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
   server:
-    enableSelfPreservation: false
+    enableSelfPreservation: true
