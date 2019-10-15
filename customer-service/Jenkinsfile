@@ -41,7 +41,7 @@ node {
              ])
            ])
          }
-        }
+        }*/
         stage('SSH remove Previous image') {
          script {
           sshPublisher(
@@ -89,7 +89,7 @@ node {
              ])
            ])
          }
-        }*/
+        }
         stage ('Final') {
             build job: 'gateway-service-pipeline', wait: false
         }  
