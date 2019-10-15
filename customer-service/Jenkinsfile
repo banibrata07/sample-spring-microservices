@@ -18,7 +18,7 @@ node {
              s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'aws-s3artifact-bani/customer', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/customer-service/target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'aws-s3artifact-bani/customer', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/customer-service/Dockerfile', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'aws-s3artifact-bani', userMetadata: []
             }
         }
-        /*
+        
          stage('SSH transfer') {
          script {
           sshPublisher(
@@ -41,7 +41,7 @@ node {
              ])
            ])
          }
-        }*/
+        }
         stage('SSH remove Previous image') {
          script {
           sshPublisher(
