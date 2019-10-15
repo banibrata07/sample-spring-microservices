@@ -12,12 +12,46 @@ node {
             print pom.version
             env.version = pom.version
         }
+        }
         stage('S3 transfer') {
             script {
              s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'aws-s3artifact-bani/gateway', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/gateway-service/target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'aws-s3artifact-bani/gateway', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/gateway-service/Dockerfile', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'aws-s3artifact-bani', userMetadata: []
             }
         }
-        
+         stage('restart Server') {
+           def restResponse = 'aws ec2 describe-instances --region us-east-1 --filters Name=tag:Name,Values=GatewayServer --query Reservations[].Instances[].InstanceId --output json'
+           def proc = restResponse.execute()
+           proc.waitFor()              
+           def output = proc.in.text
+           def exitcode= proc.exitValue()
+           def error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+           def list = new JsonSlurper().parseText(output)
+           list.each { 
+           def instance = it
+           def command =  'aws ec2 reboot-instances --instance-ids replace --region us-east-1'
+           command = command.replaceAll('replace',instance)
+           println "Rebooting instance Id + instance " + command
+           proc = command.execute()
+           proc.waitFor()              
+           output = proc.in.text
+           exitcode= proc.exitValue()
+           error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+           }
+            
+        }
+        /*
          stage('SSH transfer') {
          script {
           sshPublisher(
@@ -88,7 +122,7 @@ node {
              ])
            ])
          }
-        }
+        }*/
         
     }
 
