@@ -73,6 +73,18 @@ public class Api {
 	@RequestMapping("/accounts")
 	public List<Account> findAll() {
 		logger.info("Account.findAll()");
+		InetAddress localhost = null;
+		try
+        {
+			localhost = InetAddress.getLocalHost(); 
+	        System.out.println("System IP Address : " + (localhost.getHostAddress()).trim()); 
+	        for(Account account: accounts){
+	        	account.setAccountIPAddress((localhost.getHostAddress()).trim());
+	        }
+        }
+        catch(java.net.UnknownHostException e){
+        	 System.out.println(e);
+        }
 		return accounts;
 	}
 	
