@@ -1,5 +1,5 @@
 spring:
-  profile: peer2
+  profile: peer1
 
 server:  
   port: ${PORT:8761}
@@ -19,7 +19,7 @@ eureka:
     
 --- 
 spring:
-  profile: peer1
+  profile: peer2
 
 server:  
   port: ${PORT:8761}
