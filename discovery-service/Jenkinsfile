@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 node {
 
     withMaven(maven:'maven-3.6.2') {
