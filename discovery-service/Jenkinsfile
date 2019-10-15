@@ -37,6 +37,7 @@ node {
            def instance = it
            def command =  'aws ec2 reboot-instances --instance-ids replace --region us-east-1'
            command = command.replaceAll('replace',instance)
+           println "Rebooting instance Id + instance " + command
            proc = command.execute()
            proc.waitFor()              
            output = proc.in.text
