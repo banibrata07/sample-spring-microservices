@@ -4,16 +4,17 @@ spring:
 server:  
   port: ${PORT:8761}
     
-eureka:  
+eureka:
+  datacenter: cloud
   instance:
-    hostname: 172.31.21.134
+    hostname: 3.229.245.171
     prefer-ip-address: true
     appname: eureka-cluster
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://172.31.92.175:8761}/eureka
-    registerWithEureka: false
-    fetchRegistry: false
+      defaultZone: ${DISCOVERY_URL:http://35.173.40.24:8761}/eureka
+    registerWithEureka: true
+    fetchRegistry: true
   server:
     enableSelfPreservation: true
     
@@ -27,13 +28,13 @@ server:
     
 eureka:  
   instance:
-    hostname: 172.31.92.175
+    hostname: 35.173.40.24
     prefer-ip-address: true
     appname: eureka-cluster
   client:
     serviceUrl:
-      defaultZone: ${DISCOVERY_URL:http://172.31.21.134:8761}/eureka
-    registerWithEureka: false
-    fetchRegistry: false
+      defaultZone: ${DISCOVERY_URL:http://3.229.245.171:8761}/eureka
+    registerWithEureka: true
+    fetchRegistry: true
   server:
     enableSelfPreservation: true
