@@ -22,7 +22,7 @@ node {
             }
         }
         
-         stage('Autoscaling Scale Out Instance Deployment') {
+       /*  stage('Autoscaling Scale Out Instance Deployment') {
            def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name appServerASG --min-size 2 --max-size 4 --desired-capacity 4  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
            def proc = restResponse.execute()
            proc.waitFor()              
@@ -64,7 +64,7 @@ node {
         stage('Wait Time Server restart'){
          sleep 120
          echo 'waiting 120 sec'
-        }
+        }*/
         
         /* stage('restart Server') {
            def restResponse = 'aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names appServerASG  --region us-east-1 --query AutoScalingGroups[].Instances[].InstanceId --output json'
