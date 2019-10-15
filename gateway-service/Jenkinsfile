@@ -19,7 +19,73 @@ node {
              s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'aws-s3artifact-bani/gateway', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/gateway-service/target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'aws-s3artifact-bani/gateway', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '**/gateway-service/Dockerfile', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'aws-s3artifact-bani', userMetadata: []
             }
         }
-         stage('restart Server') {
+        
+        stage('Scale Down') {
+           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerAG --min-size 1 --max-size 2 --desired-capacity 1  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
+           def proc = restResponse.execute()
+           proc.waitFor()              
+           def output = proc.in.text
+           def exitcode= proc.exitValue()
+           def error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+           echo 'success from Autoscaling Scale Out Instance Deployment'
+        }
+        
+        stage('Sleeping'){
+         sleep 120
+         echo 'waiting 120 sec'
+        }
+        
+          stage('Autoscaling Scale Out Instance Deployment') {
+           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerAG --min-size 1 --max-size 2 --desired-capacity 2  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
+           def proc = restResponse.execute()
+           proc.waitFor()              
+           def output = proc.in.text
+           def exitcode= proc.exitValue()
+           def error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+           echo 'success from Autoscaling Scale Out Instance Deployment'
+        }
+        
+        stage('Sleeping'){
+         sleep 120
+         echo 'waiting 120 sec'
+        }
+
+        
+       
+         stage('Autoscaling Scale In Instance Deployment') {
+           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerAG --min-size 1 --max-size 2 --desired-capacity 1  --health-check-grace-period 30 --default-cooldown 120 --region us-east-1'
+           def proc = restResponse.execute()
+           proc.waitFor()              
+           def output = proc.in.text
+           def exitcode= proc.exitValue()
+           def error = proc.err.text
+
+           if (error) {
+               println "Std Err: ${error}"
+               println "Process exit code: ${exitcode}"
+               return exitcode
+           }
+            echo 'success from Autoscaling Scale In Instance Deployment'
+        }
+       
+        stage('Wait Time Server restart'){
+         sleep 120
+         echo 'waiting 120 sec'
+        }
+        
+        /* stage('restart Server') {
            def restResponse = 'aws ec2 describe-instances --region us-east-1 --filters Name=tag:Name,Values=GatewayServer --query Reservations[].Instances[].InstanceId --output json'
            def proc = restResponse.execute()
            proc.waitFor()              
@@ -51,7 +117,7 @@ node {
            }
            }
             
-        }
+        }*/
         /*
          stage('SSH transfer') {
          script {
