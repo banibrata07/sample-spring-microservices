@@ -21,7 +21,7 @@ node {
         }
         
         stage('Scale Down') {
-           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerAG --min-size 1 --max-size 2 --desired-capacity 1  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
+           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerASG --min-size 1 --max-size 2 --desired-capacity 1  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
            def proc = restResponse.execute()
            proc.waitFor()              
            def output = proc.in.text
@@ -42,7 +42,7 @@ node {
         }
         
           stage('Autoscaling Scale Out Instance Deployment') {
-           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerAG --min-size 1 --max-size 2 --desired-capacity 2  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
+           def restResponse = 'aws autoscaling update-auto-scaling-group --auto-scaling-group-name gatewayServerASG --min-size 1 --max-size 2 --desired-capacity 2  --health-check-grace-period 0 --default-cooldown 0 --region us-east-1'
            def proc = restResponse.execute()
            proc.waitFor()              
            def output = proc.in.text
