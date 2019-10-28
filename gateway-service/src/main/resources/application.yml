@@ -35,7 +35,7 @@ eureka:
     leaseExpirationDurationInSeconds: 2
     
 server:
-  port: 8765
+  port: 80
 
 logging:
   level:
