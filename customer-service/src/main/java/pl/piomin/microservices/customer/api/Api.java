@@ -14,7 +14,7 @@ import pl.piomin.microservices.customer.model.Account;
 import pl.piomin.microservices.customer.model.Customer;
 import pl.piomin.microservices.customer.model.CustomerType;
 import java.net.InetAddress;
-
+//test commit
 @RestController
 public class Api {
 	
